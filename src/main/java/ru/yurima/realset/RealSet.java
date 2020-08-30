@@ -33,6 +33,17 @@ public class RealSet {
         return new RealSet(intersectedSets);
     }
 
+    public boolean contains(double d) {
+        if (subSets.isEmpty()) return false;
+
+        for (SubSet subSet : subSets) {
+            if (subSet.contains(d))
+                return true;
+        }
+
+        return false;
+    }
+
 
     public static class SubSet {
 
