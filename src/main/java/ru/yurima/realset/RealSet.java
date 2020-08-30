@@ -1,55 +1,44 @@
 package ru.yurima.realset;
 
+import java.util.Set;
+
 public class RealSet {
-    private final double low;
-    private final double high;
-    private final boolean empty;
+    private Set<SubSet> subSets;
 
-    private RealSet(double low, double high, boolean empty) {
-        this.low = low;
-        this.high = high;
-        this.empty = empty;
+    public RealSet(SubSet...subSets) {
+        this.subSets = Set.of(subSets);
     }
 
-    public static RealSet newInstance(double low, double high) {
-        if (low < high)
-            return new RealSet(low, high, false);
-        else
-            throw new IllegalArgumentException("Start should be less than or equals end");
-    }
 
-    public static RealSet emptySet(){
-        return new RealSet(0, 0, true);
-    }
+    public static class SubSet {
 
-    public double getLow() {
-        if (!empty)
+        private double low;
+        private double high;
+
+        public SubSet(double low, double high) {
+            if (low > high)
+                throw new IllegalArgumentException("Low should be less than high");
+            this.low = low;
+            this.high = high;
+        }
+
+        public SubSet intersect(SubSet other) {
+            double low = Math.max(this.low, other.low);
+            double high  = Math.min(this.high,   other.high);
+            return (low < high) ?  new SubSet(low, high) : null;
+        }
+
+        public boolean contains(double d) {
+            return (d >= low && d <= high);
+        }
+
+        public double getLow() {
             return low;
-        else
-            throw new IllegalStateException("The set is empty");
-    }
+        }
 
-    public double getHigh() {
-        if (!empty)
+        public double getHigh() {
             return high;
-        else
-            throw new IllegalStateException("The set is empty");
-    }
-
-    public boolean isEmpty() {
-        return empty;
-    }
-
-    public RealSet intersect(RealSet other) {
-        if (this.isEmpty() || other.isEmpty()) return emptySet();
-
-        double low = Math.max(this.low, other.low);
-        double high  = Math.min(this.high,   other.high);
-        return (low < high) ?  newInstance(low, high) : emptySet();
-    }
-
-    public boolean contains(double d) {
-        return (d >= low && d <= high);
+        }
     }
 
 
