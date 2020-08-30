@@ -28,12 +28,19 @@ class SubSetTest {
         assertEquals(-10, intersection.getLow());
         assertEquals(10, intersection.getHigh());
 
-
         SubSet subSet3 = new SubSet(-10, 20);
         SubSet subSet4 = new SubSet(30, 50);
         intersection = subSet3.intersect(subSet4);
 
         assertNull(intersection);
+
+        SubSet subSet5 = new SubSet(-10, 10);
+        SubSet subSet6 = new SubSet(10, 20);
+        intersection = subSet5.intersect(subSet6);
+
+        assertNotNull(intersection);
+        assertEquals(10, intersection.getLow());
+        assertEquals(10, intersection.getHigh());
 
     }
 
